@@ -1,0 +1,151 @@
+:root {
+    --bg-1: #f5f7fb;
+    --bg-2: #dde7f2;
+    --card: #ffffff;
+    --text: #1b2430;
+    --muted: #4d6174;
+    --accent: #0f766e;
+    --accent-2: #0b5e57;
+    --line: #d4dde8;
+    --ok: #0f766e;
+    --warn: #b45309;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    color: var(--text);
+    background: radial-gradient(circle at 0% 0%, #ffffff 0, var(--bg-1) 45%, var(--bg-2) 100%);
+}
+
+.page {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.hero {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 18px;
+    box-shadow: 0 10px 25px rgba(15, 118, 110, 0.08);
+}
+
+.hero h1 {
+    margin: 0;
+    font-size: 28px;
+}
+
+.hero p {
+    margin: 8px 0 0;
+    color: var(--muted);
+}
+
+.status-row {
+    margin-top: 14px;
+    display: flex;
+    gap: 12px;
+    align-items: center;
+}
+
+.status {
+    padding: 6px 10px;
+    border-radius: 999px;
+    background: #ecfeff;
+    border: 1px solid #bae6fd;
+    color: var(--ok);
+    font-size: 14px;
+}
+
+button {
+    border: 0;
+    border-radius: 10px;
+    padding: 8px 14px;
+    background: var(--accent);
+    color: white;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+button:hover {
+    background: var(--accent-2);
+}
+
+.stats {
+    margin-top: 14px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 12px;
+}
+
+.stat-card {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 12px;
+}
+
+.stat-card .label {
+    font-size: 12px;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+.stat-card .value {
+    margin-top: 5px;
+    font-size: 24px;
+    font-weight: 700;
+}
+
+.table-wrap {
+    margin-top: 14px;
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    overflow: auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 960px;
+}
+
+th,
+td {
+    padding: 10px;
+    border-bottom: 1px solid var(--line);
+    text-align: left;
+    font-size: 14px;
+}
+
+th {
+    background: #f8fafc;
+    position: sticky;
+    top: 0;
+}
+
+.empty {
+    text-align: center;
+    color: var(--muted);
+}
+
+.warn {
+    color: var(--warn);
+}
+
+@media (max-width: 720px) {
+    .hero h1 {
+        font-size: 24px;
+    }
+
+    .page {
+        padding: 12px;
+    }
+}

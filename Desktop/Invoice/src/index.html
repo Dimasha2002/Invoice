@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Invoice Live Dashboard</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <main class="page">
+        <header class="hero">
+            <h1>Invoice Live Dashboard</h1>
+            <p>Auto-refreshing view of invoice data</p>
+            <div class="status-row">
+                <span id="status" class="status">Loading...</span>
+                <button id="refreshBtn" type="button">Refresh now</button>
+            </div>
+        </header>
+
+        <section class="stats" id="stats"></section>
+
+        <section class="table-wrap">
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Customer</th>
+                        <th>Phone</th>
+                        <th>Description</th>
+                        <th>Total</th>
+                        <th>Advance</th>
+                        <th>Balance</th>
+                        <th>Type</th>
+                        <th>Date</th>
+                    </tr>
+                </thead>
+                <tbody id="invoiceRows">
+                    <tr>
+                        <td colspan="9" class="empty">No data loaded yet.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+    </main>
+
+    <script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,38 @@
+# Parent directories
+../
+../../
+
+# IDE and editor
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Java compiled files
+*.class
+*.jar
+*.jar.asc
+*.jar.md5
+*.jar.sha1
+*.pom
+*.pom.asc
+*.pom.md5
+*.pom.sha1
+
+# Build directories
+target/
+out/
+build/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Node modules
+node_modules/
+package-lock.json
+
+# Environment files
+.env
+.env.local
