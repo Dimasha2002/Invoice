@@ -1,0 +1,866 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Invoice — Wedage Software Solutions</title>
+<style>
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  @page {
+    size: A4 portrait;
+    margin: 8mm;
+  }
+
+  @media print {
+    body {
+      background: #fff !important;
+      margin: 0 !important;
+      padding: 0 !important;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+
+    .toolbar {
+      display: none !important;
+    }
+
+    .invoice-container {
+      width: 190mm !important;
+      max-width: 190mm !important;
+      margin: 0 auto !important;
+      box-shadow: none !important;
+      border-radius: 0 !important;
+      overflow: visible !important;
+      page-break-inside: avoid !important;
+      break-inside: avoid !important;
+    }
+
+    .invoice-header {
+      padding: 18px 20px !important;
+    }
+
+    .logo-box img {
+      width: 85px !important;
+      height: 85px !important;
+    }
+
+    .company-info h2 {
+      font-size: 16px !important;
+      margin-bottom: 4px !important;
+    }
+
+    .company-info p {
+      font-size: 11px !important;
+      margin: 2px 0 !important;
+    }
+
+    .invoice-title {
+      font-size: 56px !important;
+      margin-bottom: 8px !important;
+    }
+
+    .meta-item {
+      font-size: 11px !important;
+      padding: 3px 10px !important;
+    }
+
+    .status-banner {
+      padding: 8px 20px !important;
+      font-size: 12px !important;
+    }
+
+    .invoice-body {
+      padding: 18px 20px !important;
+    }
+
+    .bill-balance-row {
+      gap: 16px !important;
+      margin-bottom: 18px !important;
+    }
+
+    .bill-to {
+      padding: 14px !important;
+    }
+
+    .balance-amount {
+      font-size: 36px !important;
+    }
+
+    .divider {
+      margin: 0 0 16px !important;
+    }
+
+    .items-table {
+      margin-bottom: 16px !important;
+    }
+
+    .items-table th,
+    .items-table td {
+      padding-top: 8px !important;
+      padding-bottom: 8px !important;
+    }
+
+    .summary-section {
+      margin-bottom: 10px !important;
+    }
+
+    .summary-wrap {
+      gap: 0 !important;
+    }
+
+    .issued-section {
+      padding: 0 20px 10px !important;
+      justify-content: flex-end !important;
+    }
+
+    .paid-badge-space {
+      margin: 0 !important;
+      margin-right: 5cm !important;
+    }
+
+    .paid-badge-img {
+      width: 120px !important;
+    }
+
+    .summary-box {
+      width: 280px !important;
+    }
+
+    .summary-row {
+      padding: 8px 12px !important;
+      font-size: 12px !important;
+    }
+
+    .summary-row.grand {
+      font-size: 14px !important;
+    }
+
+    .invoice-footer {
+      padding: 12px 20px !important;
+      page-break-before: avoid !important;
+      break-before: avoid !important;
+    }
+
+    .signature-img {
+      width: 135px !important;
+      height: 50px !important;
+    }
+
+    .signature-line {
+      width: 150px !important;
+      margin-top: -1px !important;
+    }
+
+    .issued-by {
+      font-size: 10px !important;
+      width: 150px !important;
+      text-align: center !important;
+    }
+
+    .invoice-container,
+    .invoice-container * {
+      page-break-inside: avoid !important;
+      break-inside: avoid !important;
+    }
+  }
+
+  body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: #f0f2f5;
+    padding: 20px;
+    margin: 0;
+  }
+
+  .toolbar {
+    max-width: 850px;
+    margin: 0 auto 20px;
+    display: flex;
+    gap: 10px;
+  }
+
+  .btn {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 600;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .btn-back {
+    background: #fff;
+    color: #333;
+    border: 1px solid #ddd;
+  }
+
+  .btn-back:hover {
+    background: #f5f5f5;
+    border-color: #1a56db;
+    color: #1a56db;
+  }
+
+  .btn-print {
+    background: #fff;
+    color: #333;
+    border: 1px solid #ddd;
+  }
+
+  .btn-print:hover {
+    background: #f5f5f5;
+    border-color: #1a56db;
+    color: #1a56db;
+  }
+
+  .btn-primary {
+    background: #1a56db;
+    color: white;
+  }
+
+  .btn-primary:hover {
+    background: #144ab0;
+  }
+
+  .invoice-container {
+    max-width: 850px;
+    margin: 0 auto;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    overflow: hidden;
+  }
+
+  /* ============ HEADER ============ */
+  .invoice-header {
+    background: linear-gradient(135deg, #1a56db 0%, #1a4fa8 100%);
+    padding: 40px;
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+  }
+
+  .header-left {
+    display: flex;
+    gap: 24px;
+    align-items: center;
+    flex-shrink: 0;
+  }
+
+  .logo-box {
+    width: auto;
+    height: auto;
+    background: none;
+    border: none;
+    border-radius: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    box-shadow: none;
+    margin-top: 0;
+  }
+
+  .logo-box img {
+    width: 115px;
+    height: 115px;
+    object-fit: contain;
+    filter: brightness(1.2);
+  }
+
+  .company-info h2 {
+    font-size: 22px;
+    margin-bottom: 6px;
+    white-space: nowrap;
+  }
+
+  .company-info p {
+    font-size: 12px;
+    opacity: 0.85;
+    margin: 3px 0;
+  }
+
+  .header-right {
+    text-align: right;
+  }
+
+  .invoice-title {
+    font-size: 48px;
+    font-weight: 300;
+    margin-bottom: 12px;
+  }
+
+  .invoice-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    align-items: flex-end;
+  }
+
+  .meta-item {
+    background: rgba(255,255,255,0.15);
+    border: 1px solid rgba(255,255,255,0.25);
+    border-radius: 20px;
+    padding: 4px 12px;
+    font-size: 12px;
+    display: inline-block;
+  }
+
+  /* ============ STATUS BANNER ============ */
+  .status-banner {
+    padding: 12px 40px;
+    font-weight: 600;
+    font-size: 14px;
+    border-bottom: 1px solid #e0e0e0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .status-banner.paid {
+    background: #d4edda;
+    color: #155724;
+  }
+
+  .status-banner.pending {
+    background: #fff3cd;
+    color: #856404;
+  }
+
+  .status-banner.partial {
+    background: #cfe2ff;
+    color: #084298;
+  }
+
+  .status-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: currentColor;
+  }
+
+  /* ============ BODY ============ */
+  .invoice-body {
+    padding: 40px;
+  }
+
+  .bill-balance-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+    margin-bottom: 40px;
+  }
+
+  .bill-to {
+    background: #e3f2fd;
+    padding: 20px;
+    border-radius: 6px;
+  }
+
+  .bill-label {
+    font-size: 11px;
+    color: #1a56db;
+    font-weight: 700;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+    letter-spacing: 1px;
+  }
+
+  .customer-name {
+    font-size: 18px;
+    font-weight: 600;
+    color: #000;
+    margin-bottom: 6px;
+  }
+
+  .customer-phone {
+    font-size: 13px;
+    color: #555;
+    margin-bottom: 10px;
+  }
+
+  .customer-desc {
+    font-size: 13px;
+    color: #666;
+  }
+
+  .balance-due {
+    text-align: right;
+  }
+
+  .balance-due-label {
+    font-size: 11px;
+    color: #1a56db;
+    font-weight: 700;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+    letter-spacing: 1px;
+  }
+
+  .balance-amount {
+    font-size: 42px;
+    font-weight: 700;
+    color: #27ae60;
+    margin-bottom: 4px;
+  }
+
+  .balance-amount.pending {
+    color: #e67e22;
+  }
+
+  .balance-status {
+    font-size: 11px;
+    color: #27ae60;
+    font-weight: 700;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+    letter-spacing: 1px;
+  }
+
+  .balance-status.pending {
+    color: #e67e22;
+  }
+
+  .balance-details {
+    font-size: 12px;
+    color: #666;
+    line-height: 1.6;
+  }
+
+  /* ============ DIVIDER ============ */
+  .divider {
+    height: 1px;
+    background: #e0e0e0;
+    margin: 0 0 30px;
+  }
+
+  /* ============ ITEMS TABLE ============ */
+  .items-table {
+    width: 100%;
+    margin-bottom: 30px;
+    border-collapse: collapse;
+  }
+
+  .items-table thead {
+    background: #1a56db;
+    color: white;
+  }
+
+  .items-table th {
+    padding: 12px 15px;
+    text-align: left;
+    font-weight: 600;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .items-table th:not(:first-child) {
+    text-align: right;
+  }
+
+  .items-table td {
+    padding: 15px;
+    border-bottom: 1px solid #f0f0f0;
+    font-size: 13px;
+  }
+
+  .items-table tbody tr:last-child td {
+    border-bottom: none;
+  }
+
+  .items-table tbody tr:hover {
+    background: #f9f9f9;
+  }
+
+  .items-table td:not(:first-child) {
+    text-align: right;
+  }
+
+  .desc-main {
+    font-weight: 600;
+  }
+
+  .desc-sub {
+    font-size: 12px;
+    color: #999;
+  }
+
+  .amount-paid {
+    color: #27ae60;
+    font-weight: 600;
+  }
+
+  /* ============ SUMMARY ============ */
+  .summary-section {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 30px;
+  }
+
+  .summary-wrap {
+    display: flex;
+    align-items: center;
+    gap: 0;
+  }
+
+  .summary-box {
+    width: 300px;
+  }
+
+  .summary-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 12px 15px;
+    border: 1px solid #e0e0e0;
+    border-bottom: none;
+    font-size: 13px;
+  }
+
+  .summary-row:last-child {
+    border-bottom: 1px solid #e0e0e0;
+  }
+
+  .summary-row.grand {
+    background: #1a56db;
+    color: white;
+    font-weight: 700;
+    font-size: 16px;
+    padding: 14px 15px;
+  }
+
+  .summary-row.paid {
+    border-color: #27ae60;
+  }
+
+  .summary-row.paid .value {
+    color: #27ae60;
+    font-weight: 600;
+  }
+
+  .summary-label {
+    color: #666;
+  }
+
+  .summary-row.grand .summary-label {
+    color: rgba(255,255,255,0.8);
+    font-weight: 500;
+  }
+
+  /* ============ FOOTER ============ */
+  .invoice-footer {
+    background: #f5f5f5;
+    padding: 30px 40px;
+    border-top: 1px solid #e0e0e0;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+  }
+
+  .issued-section {
+    padding: 0 40px 20px;
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  .paid-badge-space {
+    display: flex;
+    align-items: center;
+    margin-right: 5cm;
+  }
+
+  .paid-badge-img {
+    width: 190px;
+    height: auto;
+    object-fit: contain;
+  }
+
+  .footer-issued {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+  }
+
+  .signature-img {
+    width: 170px;
+    height: 62px;
+    object-fit: contain;
+  }
+
+  .signature-line {
+    width: 190px;
+    border-top: 1px solid #bdbdbd;
+    margin-top: -2px;
+  }
+
+  .issued-by {
+    font-size: 12px;
+    color: #222;
+    line-height: 1.35;
+    text-align: center;
+    width: 190px;
+  }
+
+  .issued-by .name {
+    font-weight: 700;
+    color: #111;
+  }
+
+  .issued-by .role {
+    font-weight: 700;
+    letter-spacing: 0.4px;
+  }
+
+  .footer-text {
+    font-size: 12px;
+    color: #666;
+  }
+
+  .footer-text strong {
+    color: #333;
+  }
+
+  .footer-brand {
+    font-size: 16px;
+    color: #1a56db;
+    font-weight: 700;
+  }
+
+  .error-message {
+    padding: 48px;
+    text-align: center;
+    color: #d32f2f;
+    font-size: 16px;
+  }
+
+  .invoice-container.loading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 400px;
+  }
+
+  .spinner {
+    border: 4px solid #f3f3f3;
+    border-top: 4px solid #1a56db;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    animation: spin 1s linear infinite;
+  }
+
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+</style>
+</head>
+<body>
+
+<!-- Toolbar -->
+<div class="toolbar">
+  <button class="btn btn-back" onclick="history.back()">
+    ← Back
+  </button>
+  <button class="btn btn-print" onclick="window.print()">
+    🖨️ Print
+  </button>
+</div>
+
+<!-- Invoice Container -->
+<div class="invoice-container" id="invoiceContainer">
+  <div class="spinner"></div>
+</div>
+
+<script>
+  // Get invoice ID from URL path (e.g., /invoice/33)
+  const pathParts = window.location.pathname.split('/');
+  const invoiceId = pathParts[pathParts.length - 1];
+
+  if (!invoiceId || isNaN(invoiceId)) {
+    document.getElementById('invoiceContainer').innerHTML = '<div class="error-message">❌ No invoice found</div>';
+  } else {
+    loadInvoice(parseInt(invoiceId));
+  }
+
+  async function loadInvoice(id) {
+    try {
+      const response = await fetch(`/api/invoices/${id}`);
+      if (!response.ok) {
+        throw new Error('Invoice not found');
+      }
+      const invoice = await response.json();
+      renderInvoice(invoice);
+    } catch (error) {
+      document.getElementById('invoiceContainer').innerHTML = 
+        `<div class="error-message">❌ ${error.message}</div>`;
+    }
+  }
+
+  function renderInvoice(invoice) {
+    // Determine status
+    let statusClass = '';
+    let statusText = '';
+    let balanceClass = '';
+    let balanceStatusText = '';
+    const isCompleted = invoice.type === 'FULL' || (invoice.type === 'REST' && invoice.balance === 0);
+
+    if (isCompleted) {
+      statusClass = 'paid';
+      statusText = '✓ Fully Paid — No outstanding balance remaining';
+      balanceClass = '';
+      balanceStatusText = 'FULLY SETTLED';
+    } else if (invoice.type === 'REST' && invoice.balance > 0) {
+      statusClass = 'partial';
+      statusText = '✓ Partially Paid — Rest amount pending';
+      balanceClass = 'pending';
+      balanceStatusText = 'PARTIALLY PAID';
+    } else if (invoice.type === 'ADVANCE') {
+      statusClass = 'pending';
+      statusText = '⏳ Pending Payment — Balance due';
+      balanceClass = 'pending';
+      balanceStatusText = 'AMOUNT DUE';
+    }
+
+    const container = document.getElementById('invoiceContainer');
+    
+    container.innerHTML = `
+      <!-- Header -->
+      <div class="invoice-header">
+        <div class="header-left">
+          <div class="logo-box">
+            <img src="/logo.png" alt="Wedage Logo">
+          </div>
+          <div class="company-info">
+            <h2>Wedage Software Solutions</h2>
+            <p>Colombo, Sri Lanka</p>
+            <p>wedagesoftwaresolutions@gmail.com</p>
+            <p>+94 76 139 0569</p>
+          </div>
+        </div>
+        <div class="header-right">
+          <div class="invoice-title">Invoice</div>
+          <div class="invoice-meta">
+            <div class="meta-item">Invoice #INV-${String(invoice.id).padStart(5, '0')}</div>
+            <div class="meta-item">Date: ${invoice.date}</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Status Banner -->
+      <div class="status-banner ${statusClass}">
+        <div class="status-dot"></div>
+        ${statusText}
+      </div>
+
+      <!-- Body -->
+      <div class="invoice-body">
+        <!-- Bill To & Balance Due -->
+        <div class="bill-balance-row">
+          <div class="bill-to">
+            <div class="bill-label">BILL TO</div>
+            <div class="customer-name">${invoice.customer_name}</div>
+            <div class="customer-phone">${invoice.phone}</div>
+            <div class="customer-desc">${invoice.description}</div>
+          </div>
+          <div class="balance-due">
+            <div class="balance-due-label">BALANCE DUE</div>
+            <div class="balance-amount ${balanceClass}">$${invoice.balance.toFixed(2)}</div>
+            <div class="balance-status ${balanceClass}">${balanceStatusText}</div>
+            <div class="balance-details">
+              <strong>Total payment:</strong> $${invoice.total_amount.toFixed(2)}<br>
+              <strong>Advanced payment:</strong> $${invoice.advance_paid.toFixed(2)}<br>
+              ${invoice.type === 'REST' ? `<strong>Rest payment:</strong> $${(invoice.rest_amount || (invoice.total_amount - invoice.advance_paid)).toFixed(2)}<br>` : ''}
+            </div>
+          </div>
+        </div>
+
+        <div class="divider"></div>
+
+        <!-- Items Table -->
+        <table class="items-table">
+          <thead>
+            <tr>
+              <th>DESCRIPTION</th>
+              <th>AMOUNT</th>
+              <th>PAID</th>
+              <th>BALANCE</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                <div class="desc-main">${invoice.description}</div>
+                <div class="desc-sub">${invoice.type === 'REST' ? 'Rest/Balance payment' : invoice.type === 'ADVANCE' ? 'Advance payment' : 'Full payment'}</div>
+              </td>
+              <td>$${invoice.total_amount.toFixed(2)}</td>
+              <td class="amount-paid">$${invoice.advance_paid.toFixed(2)}</td>
+              <td>$${invoice.balance.toFixed(2)}</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <!-- Summary -->
+        <div class="summary-section">
+          <div class="summary-wrap">
+            ${isCompleted ? `
+            <div class="paid-badge-space">
+              <img src="/paidmark.jpg" alt="Paid" class="paid-badge-img" onerror="this.style.display='none'">
+            </div>
+            ` : ''}
+            <div class="summary-box">
+              <div class="summary-row">
+                <span class="summary-label">Total Payment</span>
+                <span>$${invoice.total_amount.toFixed(2)}</span>
+              </div>
+              <div class="summary-row paid">
+                <span class="summary-label">Advanced Payment</span>
+                <span class="value">− $${invoice.advance_paid.toFixed(2)}</span>
+              </div>
+              ${invoice.type === 'REST' ? `
+              <div class="summary-row">
+                <span class="summary-label">Rest Payment</span>
+                <span>− $${(invoice.rest_amount || (invoice.total_amount - invoice.advance_paid)).toFixed(2)}</span>
+              </div>
+              ` : ''}
+              <div class="summary-row grand">
+                <span class="summary-label">BALANCE DUE</span>
+                <span>$${invoice.balance.toFixed(2)}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="issued-section">
+        <div class="footer-issued">
+          <img src="/sign.jpeg" alt="Signature" class="signature-img" onerror="this.style.display='none'">
+          <div class="signature-line"></div>
+          <div class="issued-by">
+            <div class="name">Dimasha Hansani Abeywickrama</div>
+            <div class="role">PROJECT MANAGER</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Footer -->
+      <div class="invoice-footer">
+        <div class="footer-text">
+          <strong>Thank you for choosing Wedage Software Solutions.</strong><br>
+          This invoice was issued on ${invoice.date} and reflects the payment status as shown above.
+        </div>
+      </div>
+    `;
+  }
+
+</script>
+</html>
